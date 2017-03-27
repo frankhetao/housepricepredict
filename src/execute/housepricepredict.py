@@ -4,10 +4,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pandas import Series, DataFrame
+from execute.PreProcess import *
 
 ###线性回归####
 #读取数据
-data = pd.read_csv(r'..\data\lianjia.csv', index_col=0)
+preProc=PreProcess(r'..\data\lianjia.csv')
+data=preProc.process()
 
 X = data[['room_type','size','region','chaoxiang','builtdate']]
 
