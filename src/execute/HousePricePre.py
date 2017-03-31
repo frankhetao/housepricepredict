@@ -54,8 +54,8 @@ class HousePricePre:
         model.add(Dense(1))
         model.add(Activation('linear'))
         model.compile(loss='mse',
-              optimizer='Adam',
-              metrics=['accuracy'])
+              optimizer='Adam')
+            #metrics=['accuracy']
         return model
     
     def getXList(self):
