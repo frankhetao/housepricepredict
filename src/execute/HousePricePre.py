@@ -7,7 +7,8 @@ from pandas import Series, DataFrame
 from sklearn.linear_model import LinearRegression
 from sklearn import metrics
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout, Activation
+from keras.utils import np_utils
 
 class HousePricePre:
     def __init__(self,data):
@@ -31,9 +32,32 @@ class HousePricePre:
         model = Sequential()
         input_dim_size=self.getXList().__len__()
         model.add(Dense(input_dim=input_dim_size, output_dim=1, init='uniform', activation='linear'))
-        model.compile(optimizer='adam', loss='mse')
+        model.compile(optimizer='Adam', loss='mse')
         return model
 
+    def getMaxOutLen(self):
+        '''
+        该函数暂不使用
+        '''
+        maxBitStr='{0:b}'.format(200000)#输出最大值为20万，房子单价假定不会超过这个数
+        outLen=maxBitStr.__len__()
+        return outLen
+
+    def getKerasDnnModel(self):
+        model = Sequential()
+
+        input_dim_size=self.getXList().__len__()
+        model.add(Dense(512, input_shape=(input_dim_size,)))
+        model.add(Activation('relu'))
+        model.add(Dense(512))
+        model.add(Activation('relu')) 
+        model.add(Dense(1))
+        model.add(Activation('linear'))
+        model.compile(loss='mse',
+              optimizer='Adam',
+              metrics=['accuracy'])
+        return model
+    
     def getXList(self):
         #['hospital','bus','mall','subway','school','officeBuild','room_type','size','region','chaoxiang','builtdate']
         #return ['builtdate','louchentype','loucheng','taxfree','size','hospital','bus','mall','subway','school','officeBuild','region_avg_price']
@@ -43,6 +67,18 @@ class HousePricePre:
     def gety(self):
         return 'unit_price';
     
+    def kerasDnnFit(self,model):
+        data=self.data
+        X = data[self.getXList()].values#转换为numpy.ndarray
+        
+        y = data[self.gety()].values;#转换为numpy.ndarray
+        input_dim_size=self.getXList().__len__()
+        X = X.reshape(X.shape[0], input_dim_size)
+        X = X.astype('float32')
+        model.fit(X, y,
+                    batch_size=128, nb_epoch=3,
+                    verbose=1)
+        
     def kerasLinearFit(self,model):
         data=self.data
         X = data[self.getXList()].values#转换为numpy.ndarray
@@ -54,9 +90,9 @@ class HousePricePre:
 
         model.fit(X, y, nb_epoch=50, verbose=1)
         
-        weights = model.layers[0].get_weights()
-        w = weights[0][0][0]
-        b = weights[1][0]
+        #weights = model.layers[0].get_weights()
+        #w = weights[0][0][0]
+        #b = weights[1][0]
 
     def regress(self,model):
         data=self.data
