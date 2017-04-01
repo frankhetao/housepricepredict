@@ -61,7 +61,7 @@ class HousePricePre:
     def getXList(self):
         #['hospital','bus','mall','subway','school','officeBuild','room_type','size','region','chaoxiang','builtdate']
         #return ['builtdate','louchentype','loucheng','taxfree','size','hospital','bus','mall','subway','school','officeBuild','region_avg_price']
-        return ['builtdate','size','hospital','bus','mall','subway','school','officeBuild','region_avg_price']
+        return ['to_center_distance','builtdate','size','hospital','bus','mall','subway','school','officeBuild','region_avg_price']
         #return ['size']
     
     def gety(self):
