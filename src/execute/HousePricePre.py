@@ -61,7 +61,7 @@ class HousePricePre:
     def getXList(self):
         #['hospital','bus','mall','subway','school','officeBuild','room_type','size','region','chaoxiang','builtdate']
         #return ['builtdate','louchentype','loucheng','taxfree','size','hospital','bus','mall','subway','school','officeBuild','region_avg_price']
-        return ['to_center_distance','builtdate','size','hospital','bus','mall','subway','school','officeBuild','region_avg_price']
+        return ['to_center_distance','louchentype','loucheng','taxfree','builtdate','size','hospital','bus','mall','subway','school','officeBuild','region_avg_price']
         #return ['size']
     
     def gety(self):
@@ -76,7 +76,7 @@ class HousePricePre:
         X = X.reshape(X.shape[0], input_dim_size)
         X = X.astype('float32')
         model.fit(X, y,
-                    batch_size=128, nb_epoch=3,
+                    batch_size=128, nb_epoch=30,
                     verbose=1)
         
     def kerasLinearFit(self,model):
